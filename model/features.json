@@ -1,0 +1,12 @@
+[
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "oldbalanceDest",
+    "amount_to_oldbalance_ratio",
+    "amount_to_dest_balance_ratio",
+    "type_CASH_OUT",
+    "type_DEBIT",
+    "type_PAYMENT",
+    "type_TRANSFER"
+]

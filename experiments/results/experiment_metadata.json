@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-09-27 23:32:36",
+  "total_dataset_rows": 6362620,
+  "temporal_split_sizes": {
+    "train": 4463587,
+    "val": 980416,
+    "test": 918617
+  },
+  "features": [
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "oldbalanceDest",
+    "amount_to_oldbalance_ratio",
+    "amount_to_dest_balance_ratio",
+    "type_CASH_OUT",
+    "type_DEBIT",
+    "type_PAYMENT",
+    "type_TRANSFER"
+  ],
+  "leakage_audit": {
+    "newbalanceOrig": {
+      "status": "EXCLUDED",
+      "type": "Post-Transaction Leakage",
+      "reason": "Balance of sender immediately after transaction reveals deducted amount before validation."
+    },
+    "newbalanceDest": {
+      "status": "EXCLUDED",
+      "type": "Post-Transaction Leakage",
+      "reason": "Balance of recipient immediately after transaction."
+    },
+    "isFlaggedFraud": {
+      "status": "EXCLUDED",
+      "type": "Heuristic Rule Leakage",
+      "reason": "System rule (amount > 200,000); creates target feedback loop and misses non-flagged fraud."
+    },
+    "nameOrig": {
+      "status": "EXCLUDED",
+      "type": "Identifier Leakage",
+      "reason": "High-cardinality account ID string causes overfitting and fails to generalize."
+    },
+    "nameDest": {
+      "status": "EXCLUDED",
+      "type": "Identifier Leakage",
+      "reason": "High-cardinality recipient account ID string."
+    },
+    "Preprocessing": {
+      "status": "TRAIN-ONLY FITTING",
+      "type": "Scaler Leakage Guard",
+      "reason": "Scalers and encoders are fitted strictly on X_train. X_val and X_test are transformed without fitting."
+    },
+    "SMOTE": {
+      "status": "TRAIN-ONLY RESAMPLING",
+      "type": "Synthetic Data Leakage Guard",
+      "reason": "SMOTE synthetic oversampling is applied ONLY within X_train via imblearn Pipeline. Zero synthetic samples in Val/Test."
+    }
+  },
+  "best_model_by_f1": "RF_Baseline"
+}
